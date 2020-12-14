@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+Преподаватели
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+    {% if teacher_list %}
+        {% for teacher in teacher_list %}
+            <p> {{ teacher.second_name }}  {{ teacher.first_name }} {{ teacher.middle_name }}. <a href="{{ teacher.get_absolute_url }}">Подробнее</a> </p>
+            <p> {{ teacher.url_test }} </p>
+        {% endfor %}
+    {% else %}
+        <p>Ничего нет</p>
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block title%} {{ teacher }} {% endblock %}
+
+{% block content %}
+<h1>{{ teacher }}</h1>
+<p>Номер телефона:
+{% if teacher.phone_number %}
+    {{ teacher.display_phone_number }}
+{% else %}
+    Отсутвует
+{% endif %}
+</p>
+{% endblock %}

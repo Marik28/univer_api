@@ -3,7 +3,9 @@
 {% block title%} {{ teacher }} {% endblock %}
 
 {% block content %}
-<h1>{{ teacher }}</h1>
+<h1>{{ teacher }} </h1>
+<p><a href="{{ teacher.kstu_link }}"><i>Ссылка на универ </i></a></p>
+
 <p>Номер телефона:
 {% if teacher.phone_number %}
     {{ teacher.display_phone_number }}

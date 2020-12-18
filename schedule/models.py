@@ -1,30 +1,34 @@
-from pytils.translit import slugify
 import re
 
 from django.core import validators
 from django.db import models
 from django.urls import reverse
 
+from pytils.translit import slugify
+
+
+class TeacherPosition(models.Model):
+    """Модель, отображающая должность преподавателя"""
+    name = models.CharField(max_length=100, verbose_name='Название должности')
+
+
+class Department(models.Model):
+    """Модель, отображающая кафедру"""
+    name = models.CharField(max_length=255, verbose_name='Название кафедры')
+
 
 class Teacher(models.Model):
     """Модель, отображающая преподавателя"""
-
-    POSITION_CHOICES = [
-        ('SL', 'Старший преподаватель'),
-        ('JL', 'Преподаватель'),
-        ('DO', 'Доцент'),
-        ('CS', 'Кандидат технических наук'),
-        ('DS', 'Доктор Технических наук'),
-    ]
-
     second_name = models.CharField(max_length=50, verbose_name='Фамилия преподавателя',
                                    help_text='Максимальная длина 50 символов')
     first_name = models.CharField(max_length=50, verbose_name='Имя преподавателя',
                                   help_text='Максимальная длина 50 символов')
     middle_name = models.CharField(max_length=50, verbose_name='Отчество преподавателя',
                                    help_text='Максимальная длина 50 символов')
-    position = models.CharField(max_length=2, choices=POSITION_CHOICES, default='JL',
-                                verbose_name='Должность', null=True, blank=True)
+    position = models.ForeignKey(TeacherPosition, on_delete=models.SET_NULL,
+                                 verbose_name='Должность', null=True, blank=True, related_name='teachers')
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL,
+                                   verbose_name='Кафедра', null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True,
                                     validators=[
                                         validators.RegexValidator(
@@ -62,8 +66,8 @@ class Teacher(models.Model):
 
 class Subject(models.Model):
     """Модель, отображающая предмет"""
-    name = models.CharField(max_length=50, verbose_name='Название предмета',
-                            help_text='Не более 50 символов')
+    name = models.CharField(max_length=255, verbose_name='Название предмета',
+                            help_text='Не более 100 символов')
     lecturer = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                  verbose_name='Имя лектора', related_name='lecture_set')
     lab_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
@@ -91,19 +95,21 @@ class Subject(models.Model):
         return self.name
 
 
+class LessonKind(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Название типа пары')
+
+    def __str__(self):
+        return self.name
+
+
 class Lesson(models.Model):
     """Модель, отображающая конкретную пару"""
-    KIND_CHOICES = [
-        ('LE', 'Лекция'),
-        ('LA', 'Лабораторная работа'),
-        ('PR', 'Практика'),
-        ('SP', 'СРСП'),
-        ('SS', 'СРС'),
-        ('CH', 'Кураторский час'),
-    ]
-    subject = models.ForeignKey(Subject, on_delete=models.DO_NOTHING, verbose_name='Название предмета')
-    kind = models.CharField(max_length=2, choices=KIND_CHOICES, default='LE', verbose_name='Тип занятия')
-    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, verbose_name='Преподаватель')
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name='Название предмета')
+    kind = models.ForeignKey(LessonKind, on_delete=models.SET_NULL, null=True, blank=True,
+                             verbose_name='Тип занятия')
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name='Преподаватель')
     time = models.TimeField(verbose_name='Время начала занятия')
 
     def __str__(self):
@@ -115,13 +121,21 @@ class Lesson(models.Model):
         verbose_name_plural = 'Пары'
 
 
-class DayOfWeek(models.Model):
+class Day(models.Model):
+    """Модель дня недели"""
+    name = models.CharField(max_length=20, verbose_name='Название дня недели')
+
+    def __str__(self):
+        return self.name
+
+
+class DaySchedule(models.Model):
     """Модель, отображающая день недели с определенным расписанием"""
     lessons = models.ManyToManyField(Lesson)
-    day = models.DateField(verbose_name='День недели')
+    day = models.ForeignKey('Day', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='_День недели')
     is_numerator = models.BooleanField(verbose_name='Является ли числителем')
 
     class Meta:
         ordering = ['day']
-        verbose_name = 'День недели'
-        verbose_name_plural = 'Дни недели'
+        verbose_name = 'Расписание на 1 день'
+        verbose_name_plural = 'Расписание на 1 день'

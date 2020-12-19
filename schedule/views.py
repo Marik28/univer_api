@@ -13,20 +13,25 @@ from .serializers import DayOfWeekSerializer
 class WeekAPIView(views.APIView):
     def get(self, request: Request):
         print(request.GET)
-        days = get_schedule(request.GET)
+        days = get_week_schedule(request.GET)
         serializer = DayOfWeekSerializer(days, many=True)
         return Response(data=serializer.data, status=200)
 
 
 class DayAPIView(views.APIView):
-    def get(self, request: Request, day_code):
-        week_day = Day.objects.get(code=day_code)
-        day_schedule = DaySchedule.objects.filter(day=week_day)
+    def get(self, request: Request):
+        query: QueryDict = request.GET
+        print(query)
+        print()
+        week_day = Day.objects.get(code=query['day'][0])
+        numerator = bool(int(query['is_numerator'][0]))
+        print(numerator)
+        day_schedule = DaySchedule.objects.filter(day=week_day).filter(is_numerator=numerator)
         serializer = DayOfWeekSerializer(day_schedule, many=True)
         return Response(data=serializer.data, status=200)
 
 
-def get_schedule(request_query: QueryDict):
+def get_week_schedule(request_query: QueryDict):
     if len(request_query) == 0:
         days = DaySchedule.objects.all()
     else:

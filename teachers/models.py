@@ -1,5 +1,6 @@
 import re
 
+from django.core import validators
 from django.db import models
 from django.urls import reverse
 from pytils.translit import slugify
@@ -12,6 +13,11 @@ class TeacherPosition(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Должность преподавателя'
+        verbose_name_plural = 'Должности преподавателей'
+
 
 class Department(models.Model):
     """Модель, отображающая кафедру"""
@@ -20,6 +26,11 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Кафедра'
+        verbose_name_plural = 'Кафедры'
 
 
 class Teacher(models.Model):

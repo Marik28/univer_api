@@ -2,7 +2,7 @@ from django.db import models
 
 from pytils.translit import slugify
 
-from studenthelp.teachers.models import Teacher
+from teachers.models import Teacher
 
 
 class Subject(models.Model):
@@ -23,6 +23,9 @@ class Subject(models.Model):
     slug = models.SlugField(max_length=200, null=True, blank=True, unique=True,
                             verbose_name='Удобное представления URL', help_text='Устанавливается автоматически ')
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self))
         super().save(*args, *kwargs)
@@ -32,15 +35,17 @@ class Subject(models.Model):
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
 
-    def __str__(self):
-        return self.name
-
 
 class LessonKind(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название типа пары')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Тип пары'
+        verbose_name_plural = 'Типы пары'
 
 
 class Lesson(models.Model):
@@ -64,10 +69,16 @@ class Lesson(models.Model):
 
 class Day(models.Model):
     """Модель дня недели"""
+    code = models.CharField(max_length=10, null=True, verbose_name='Сокращенное название')
     name = models.CharField(max_length=20, verbose_name='Название дня недели')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'День недели'
+        verbose_name_plural = 'Дни недели'
 
 
 class DaySchedule(models.Model):

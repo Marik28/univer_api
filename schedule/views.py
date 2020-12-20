@@ -19,7 +19,6 @@ class WeekAPIView(views.APIView):
 class DayAPIView(views.APIView):
     """View для отображения расписания на 1 день"""
     def get(self, request: Request):
-        query: QueryDict = request.GET
-        day_schedule = get_day_schedule(query)
+        day_schedule = get_day_schedule(request.GET)
         serializer = DayOfWeekSerializer(day_schedule, many=True)
         return Response(data=serializer.data, status=200)

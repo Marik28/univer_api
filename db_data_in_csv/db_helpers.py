@@ -1,7 +1,7 @@
 import csv
 
-from schedule.models import Subject
-from teachers.models import Teacher, Department
+from studenthelp.schedule.models import Subject
+from studenthelp.teachers.models import Teacher, Department
 
 
 def add_teachers_to_db(csv_file: str, department) -> None:

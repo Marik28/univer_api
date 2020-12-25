@@ -48,29 +48,11 @@ class LessonKind(models.Model):
         verbose_name_plural = 'Типы пары'
 
 
-class Lesson(models.Model):
-    """Модель, отображающая конкретную пару"""
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
-                                verbose_name='Название предмета')
-    kind = models.ForeignKey(LessonKind, on_delete=models.SET_NULL, null=True, blank=True,
-                             verbose_name='Тип занятия')
-    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
-                                verbose_name='Преподаватель')
-    time = models.TimeField(verbose_name='Время начала занятия')
-
-    def __str__(self):
-        return f'{self.time} {self.subject.name}'
-
-    class Meta:
-        ordering = ['time']
-        verbose_name = 'Пара'
-        verbose_name_plural = 'Пары'
-
-
 class Day(models.Model):
     """Модель дня недели"""
     code = models.CharField(max_length=10, null=True, verbose_name='Сокращенное название')
     name = models.CharField(max_length=20, verbose_name='Название дня недели')
+    index = models.PositiveSmallIntegerField('Порядковый номер', null=True)
 
     def __str__(self):
         return self.name
@@ -81,14 +63,26 @@ class Day(models.Model):
         verbose_name_plural = 'Дни недели'
 
 
-class DaySchedule(models.Model):
-    """Модель, отображающая день недели с определенным расписанием"""
-    lessons = models.ManyToManyField(Lesson)
+class Lesson(models.Model):
+    """Модель, отображающая конкретную пару"""
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name='Название предмета')
+    kind = models.ForeignKey(LessonKind, on_delete=models.SET_NULL, null=True, blank=True,
+                             verbose_name='Тип занятия')
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name='Преподаватель')
+    time = models.TimeField(verbose_name='Время начала занятия')
     day = models.ForeignKey('Day', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='_День недели')
-    is_numerator = models.BooleanField(verbose_name='Является ли числителем')
+    is_numerator = models.BooleanField(verbose_name='Числитель/знаменатель', null=True)
+
+    def __str__(self):
+        if self.is_numerator:
+            num = 'Числитель'
+        else:
+            num = 'Знаменатель'
+        return f'{self.time} {self.subject.name} ({self.day}|{num})'
 
     class Meta:
-        ordering = ['day']
-        verbose_name = 'Расписание на 1 день'
-        verbose_name_plural = 'Расписание на 1 день'
-
+        ordering = ['time']
+        verbose_name = 'Пара'
+        verbose_name_plural = 'Пары'

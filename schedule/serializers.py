@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from .models import DaySchedule, Lesson, Subject, Day
+from .models import Lesson, Subject, Day
 
 
 class DaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
-        fields = ('name', 'code')
+        fields = ('name', 'code', 'index')
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -18,16 +18,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer()
-
-    class Meta:
-        model = Lesson
-        fields = ('id', 'time', 'subject', 'kind', 'teacher')
-
-
-class DayOfWeekSerializer(serializers.ModelSerializer):
-    lessons = LessonSerializer(many=True)
     day = DaySerializer()
 
     class Meta:
-        model = DaySchedule
-        fields = ('lessons', 'day', 'is_numerator')
+        model = Lesson
+        fields = ('id', 'time', 'subject', 'kind', 'teacher', 'day', 'is_numerator')

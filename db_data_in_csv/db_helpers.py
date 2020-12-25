@@ -1,7 +1,7 @@
 import csv
 
-from studenthelp.schedule.models import Subject
-from studenthelp.teachers.models import Teacher, Department
+from schedule.models import Subject, Day
+from teachers.models import Teacher, Department
 
 
 def add_teachers_to_db(csv_file: str, department) -> None:
@@ -34,3 +34,13 @@ def add_subjects_to_db(csv_file: str) -> None:
             subj = Subject(name=name)
             subj.save()
 
+
+def add_days_to_db(csv_file: str) -> None:
+    with open(csv_file, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            code = row['code']
+            name = row['day']
+            index = row['index']
+            day = Day(name=name, code=code, index=index)
+            day.save()

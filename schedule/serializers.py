@@ -33,4 +33,4 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ('id', 'time', 'subject', 'kind', 'teacher', 'day', 'is_numerator')
+        fields = '__all__'

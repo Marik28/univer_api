@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from schedule.models import Teacher
+from .models import Teacher, TeacherPosition, Department
+
+from schedule.serializers import SubjectSerializer
+from .serializers import TeacherSerializer, TeacherPositionSerializer, DepartmentSerializer, TeacherDetailSerializer
 
 
-class TeachersListView(ListView):
-    model = Teacher
-    template_name = 'teachers/teacher_list.html'
-
-
-class TeacherDetailView(DetailView):
-    model = Teacher
-    template_name = 'teachers/teacher_detail.html'
+class TeacherListView(APIView):
+    """View для отображения информации о преподе"""
+    def get(self, request: Request):
+        teachers = Teacher.objects.all()
+        serializer = TeacherDetailSerializer(teachers, many=True)
+        return Response(data=serializer.data, status=200)

@@ -58,7 +58,7 @@ class Day(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        ordering = ['index']
         verbose_name = 'День недели'
         verbose_name_plural = 'Дни недели'
 

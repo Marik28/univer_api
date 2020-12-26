@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Lesson, Subject, Day
+from .models import Lesson, Subject, Day, LessonKind
+
+from teachers.serializers import TeacherSerializer
 
 
 class DaySerializer(serializers.ModelSerializer):
@@ -16,9 +18,18 @@ class SubjectSerializer(serializers.ModelSerializer):
         exclude = ['slug']
 
 
+class LessonKindSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LessonKind
+        fields = '__all__'
+
+
 class LessonSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer()
     day = DaySerializer()
+    kind = LessonKindSerializer()
+    teacher = TeacherSerializer()
 
     class Meta:
         model = Lesson

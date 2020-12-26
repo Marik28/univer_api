@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
     'schedule.apps.ScheduleConfig',
     'teachers.apps.TeachersConfig',
+    'documentation.apps.DocumentationConfig',
 ]
 
 MIDDLEWARE = [

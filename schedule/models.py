@@ -84,5 +84,6 @@ class Lesson(models.Model):
 
     class Meta:
         ordering = ['time']
+        unique_together = ['subject', 'is_numerator', 'day', 'teacher', 'time']
         verbose_name = 'Пара'
         verbose_name_plural = 'Пары'

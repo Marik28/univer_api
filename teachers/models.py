@@ -77,5 +77,6 @@ class Teacher(models.Model):
 
     class Meta:
         ordering = ['second_name', 'first_name']
+        unique_together = [['first_name', 'second_name', 'middle_name']]
         verbose_name = 'Преподаватель'
         verbose_name_plural = 'Преподаватели'

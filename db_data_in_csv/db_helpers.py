@@ -1,10 +1,14 @@
 import csv
+import datetime as dt
 
-from schedule.models import Subject, Day
+from django.db import IntegrityError
+from django.db.models import Model
+
+from schedule.models import Subject, Day, Lesson, LessonKind
 from teachers.models import Teacher, Department
 
 
-def add_teachers_to_db(csv_file: str, department) -> None:
+def add_teachers_to_db(csv_file: str, department: Model) -> None:
     with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -44,3 +48,36 @@ def add_days_to_db(csv_file: str) -> None:
             index = row['index']
             day = Day(name=name, code=code, index=index)
             day.save()
+
+
+def get_numerator(txt: str):
+    if txt == '-':
+        return None
+    else:
+        return bool(txt == 'числитель')
+
+
+def make_schedule_from_csv(csv_file: str) -> None:
+    with open(csv_file, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            print(row['teacher'].split()[0])
+            print(row['numerator'])
+            print(row['kind'])
+            subj = Subject.objects.get(name=row['subject'])
+            kind = LessonKind.objects.get(name=row['kind'])
+            teacher = Teacher.objects.get(second_name=row['teacher'].split()[0].strip())
+            time = dt.time().fromisoformat(row['time'])
+            day = Day.objects.get(name=row['day_of_week'])
+            numerator = get_numerator(row['numerator'])
+
+            if numerator is None:
+                nums = [True, False]
+            else:
+                nums = [numerator]
+            for num in nums:
+                lesson = Lesson(subject=subj, kind=kind, teacher=teacher, time=time, day=day, is_numerator=num)
+                try:
+                    lesson.save()
+                except IntegrityError:
+                    pass

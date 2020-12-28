@@ -3,13 +3,22 @@ from django.http import QueryDict
 from .models import Lesson, Day
 
 
+def parse_parity(request_query: QueryDict) -> bool:
+    print(request_query['is_numerator'][0])
+    print(bool(int(request_query['is_numerator'][0])))
+    return bool(int(request_query['is_numerator'][0]))
+
+
 def get_week_schedule(request_query: QueryDict) -> list[Lesson]:
     """Возвращает расписание на неделю числитель/знаменатель"""
     if len(request_query) == 0:
         days = Lesson.objects.all()
     else:
-        numerator = bool(int(request_query['is_numerator'][0]))
-        days = Lesson.objects.filter(is_numerator=numerator)
+        is_numerator = parse_parity(request_query)
+        if is_numerator:
+            days = Lesson.objects.numerator()
+        else:
+            days = Lesson.objects.denominator()
     return days
 
 
@@ -22,6 +31,10 @@ def get_day_schedule(request_query: QueryDict):
     except Day.DoesNotExist:
         day_schedule = None
     else:
-        numerator = bool(int(request_query['is_numerator'][0]))
-        day_schedule = Lesson.objects.filter(day=week_day).filter(is_numerator=numerator)
+        is_numerator = parse_parity(request_query)
+        if is_numerator:
+            parity_schedule = Lesson.objects.numerator()
+        else:
+            parity_schedule = Lesson.objects.denominator()
+        day_schedule = parity_schedule.filter(day=week_day).filter(archived=False)
     return day_schedule

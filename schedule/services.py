@@ -1,12 +1,24 @@
 from django.http import QueryDict
 
+from .exceptions import NotCorrectQuery
 from .models import Lesson, Day
 
 
+def parse_num(request_query: QueryDict) -> bool:
+    return bool(int(request_query['is_numerator']))
+
+
 def parse_parity(request_query: QueryDict) -> bool:
-    print(request_query['is_numerator'][0])
-    print(bool(int(request_query['is_numerator'][0])))
-    return bool(int(request_query['is_numerator'][0]))
+    try:
+        parity = request_query['parity']
+    except KeyError:
+        raise NotCorrectQuery('Не было передано значение четности недели')
+    if parity == 'числитель':
+        return True
+    elif parity == 'знаменатель':
+        return False
+    else:
+        raise NotCorrectQuery(f'Неизвестное значение четности недели ({parity}). Допустимы только числитель/знаменатель')
 
 
 def get_week_schedule(request_query: QueryDict) -> list[Lesson]:
@@ -27,7 +39,7 @@ def get_day_schedule(request_query: QueryDict):
     возвращает None"""
     print(request_query)
     try:
-        week_day = Day.objects.get(code=request_query['day'])
+        week_day = Day.objects.get(name=request_query['day_name'].lower())
     except Day.DoesNotExist:
         day_schedule = None
     else:

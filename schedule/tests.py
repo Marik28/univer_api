@@ -1,3 +1,4 @@
-from teachers.models import Teacher
+from django.http import QueryDict
 
-print(dir(Teacher))
+q = QueryDict()
+print(bool(q))

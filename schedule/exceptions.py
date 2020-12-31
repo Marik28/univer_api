@@ -1,0 +1,2 @@
+class NotCorrectQuery(Exception):
+    pass

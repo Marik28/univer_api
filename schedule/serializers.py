@@ -8,7 +8,7 @@ from teachers.serializers import TeacherSerializer
 class DaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
-        fields = ('name', 'code', 'index')
+        fields = ('name',)
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class LessonKindSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = LessonKind
-        fields = '__all__'
+        fields = ['name']
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -33,4 +33,4 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = '__all__'
+        exclude = ('archived',)

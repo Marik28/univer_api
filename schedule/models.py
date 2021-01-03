@@ -67,9 +67,9 @@ class Day(models.Model):
 class Lesson(models.Model):
     """Модель, отображающая конкретную пару"""
     PARITY_CHOICES = (
-        ('N', 'числитель'),
-        ('D', 'знаменатель'),
-        ('B', 'всегда')
+        ('Числитель', 'числитель'),
+        ('Знаменатель', 'знаменатель'),
+        ('Всегда', 'всегда')
     )
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Название предмета')
@@ -80,17 +80,17 @@ class Lesson(models.Model):
     time = models.TimeField(verbose_name='Время начала занятия')
     day = models.ForeignKey('Day', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='_День недели')
     is_numerator = models.BooleanField(verbose_name='Числитель/знаменатель', null=True)
-    parity = models.CharField(verbose_name='Четность недели', max_length=1, choices=PARITY_CHOICES, default='B')
+    parity = models.CharField(verbose_name='Четность недели', max_length=15, choices=PARITY_CHOICES, default='B')
     archived = models.BooleanField(verbose_name='Заархивированный предмет', default=False)
 
     objects = LessonManager()
 
     def __str__(self):
-        if self.is_numerator:
-            num = 'Числитель'
-        else:
-            num = 'Знаменатель'
-        return f'{self.time} {self.subject.name} ({self.day}|{num})'
+        # if self.is_numerator:
+        #     num = 'Числитель'
+        # else:
+        #     num = 'Знаменатель'
+        return f'{self.subject.name}'
 
     class Meta:
         ordering = ['time']

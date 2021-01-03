@@ -57,27 +57,33 @@ def get_numerator(txt: str):
         return bool(txt == 'числитель')
 
 
+def get_parity(txt: str):
+    if txt == '-':
+        return 'Всегда'
+    return txt.capitalize()
+
+
 def make_schedule_from_csv(csv_file: str) -> None:
     with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            print(row['teacher'].split()[0])
+            # print(row['teacher'])
             print(row['numerator'])
             print(row['kind'])
             subj = Subject.objects.get(name=row['subject'])
             kind = LessonKind.objects.get(name=row['kind'])
-            teacher = Teacher.objects.get(second_name=row['teacher'].split()[0].strip())
+            teacher = row['teacher']
+            print(f'{teacher=}')
+            if teacher == '':
+                teacher = None
+            else:
+                teacher = Teacher.objects.get(second_name=teacher.split()[0].strip())
             time = dt.time().fromisoformat(row['time'])
             day = Day.objects.get(name=row['day_of_week'])
-            numerator = get_numerator(row['numerator'])
+            parity = get_parity(row['numerator'])
 
-            if numerator is None:
-                nums = [True, False]
-            else:
-                nums = [numerator]
-            for num in nums:
-                lesson = Lesson(subject=subj, kind=kind, teacher=teacher, time=time, day=day, is_numerator=num)
-                try:
-                    lesson.save()
-                except IntegrityError:
-                    pass
+            lesson = Lesson(subject=subj, kind=kind, teacher=teacher, time=time, day=day, parity=parity)
+            try:
+                lesson.save()
+            except IntegrityError:
+                pass

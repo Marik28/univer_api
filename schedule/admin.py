@@ -6,7 +6,7 @@ from .models import Day, LessonKind, Subject, Lesson
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('time', '__str__', 'day', 'teacher', 'parity')
     list_display_links = ('__str__',)
-    list_filter = ('day', 'teacher', 'parity')
+    list_filter = ('day', 'parity', 'teacher',)
 
     def archive(self):
         pass

@@ -4,7 +4,8 @@ from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .serializers import LessonSerializer
+from .models import Subject
+from .serializers import LessonSerializer, SubjectSerializer
 from .services import get_week_schedule, get_day_schedule
 
 
@@ -22,3 +23,4 @@ class DayAPIView(views.APIView):
         day_schedule = get_day_schedule(request.GET)
         serializer = LessonSerializer(day_schedule, many=True)
         return Response(data=serializer.data, status=200)
+

@@ -37,7 +37,6 @@ def get_week_schedule(request_query: QueryDict) -> list[Lesson]:
 def get_day_schedule(request_query: QueryDict):
     """Возвращает расписание на 1 день. Если на этот день нет расписания,
     возвращает None"""
-    print(request_query)
     try:
         week_day = Day.objects.get(name=request_query['day_name'].lower())
     except Day.DoesNotExist:

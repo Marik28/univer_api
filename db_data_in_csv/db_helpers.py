@@ -67,7 +67,6 @@ def make_schedule_from_csv(csv_file: str) -> None:
     with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            # print(row['teacher'])
             print(row['numerator'])
             print(row['kind'])
             subj = Subject.objects.get(name=row['subject'])

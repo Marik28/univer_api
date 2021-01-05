@@ -28,6 +28,12 @@ class TeacherSerializer(serializers.ModelSerializer):
         exclude = ('slug',)
 
 
+class TeacherLittleInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ("id", "second_name", "first_name", "middle_name")
+
+
 class TeacherSubjectListSerializer(serializers.ModelSerializer):
 
     class Meta:

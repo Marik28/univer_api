@@ -50,11 +50,13 @@ class Teacher(models.Model):
                                         validators.RegexValidator(
                                             regex=r'\+7[ -]?7[0-9]{2}[ -]?[0-9]{3}[ -]?[0-9]{2}[ -]?[0-9]{2}'
                                         )],
-                                    verbose_name='Номер телефона преподавателя', help_text='Пример: +7708-999-99-99')
+                                    verbose_name='Номер телефона преподавателя',
+                                    help_text='Пример: +7-708-999-99-99. Пробелы и тире можно не писать')
     slug = models.SlugField(max_length=200, null=True, blank=True, unique=True,
                             verbose_name='Удобное представления URL', help_text='Устанавливается автоматически ')
     kstu_link = models.URLField(max_length=255, null=True, blank=True,
                                 verbose_name='Ссылка на преподавателя на сайте KSTU')
+    email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="E-mail преподавателя")
 
     def display_phone_number(self):
         """Отображение телефона без пробелов"""

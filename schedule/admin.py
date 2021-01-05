@@ -4,7 +4,7 @@ from .models import Day, LessonKind, Subject, Lesson
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('time', '__str__', 'day', 'teacher', 'parity')
+    list_display = ('time', '__str__', 'day', 'teacher', 'parity', 'kind')
     list_display_links = ('__str__',)
     list_filter = ('day', 'parity', 'teacher',)
     actions = ['archive', 'unarchive']
@@ -33,6 +33,11 @@ class LessonAdmin(admin.ModelAdmin):
     unarchive.allowed_permission = ('change',)
 
 
-admin.site.register(Subject)
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
+
 admin.site.register(Day)
 admin.site.register(LessonKind)

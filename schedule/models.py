@@ -11,11 +11,11 @@ class Subject(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название предмета',
                             help_text='Не более 100 символов')
     lecturer = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
-                                 verbose_name='Имя лектора', related_name='lecture_set')
+                                 verbose_name='Лектора', related_name='lecture_set')
     lab_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
-                                    verbose_name='Имя преподавателя, ведущего лабораторные', related_name='lab_set')
+                                    verbose_name='Преподаватель, ведущий лабораторные', related_name='lab_set')
     practic_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
-                                        verbose_name='Имя преподавателя, ведущего практику',
+                                        verbose_name='Преподаватель, ведущий практику',
                                         related_name='practic_set')
     official_playlist_url = models.URLField(max_length=255, null=True, blank=True,
                                             verbose_name='Ссылка на плейлист на канале КарТУ')

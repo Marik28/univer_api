@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -18,14 +19,10 @@ class SubjectListView(views.APIView):
 
 class SubjectAPIView(views.APIView):
     """View для отображения информации о конкретном предмете"""
-    def get(self, request: Request, id):
-        try:
-            subj = Subject.objects.get(id=int(id))
-        except Subject.DoesNotExist:
-            return Response(status=404)
-        else:
-            serializer = SubjectDetailSerializer(subj, many=False)
-            return Response(serializer.data, status=200)
+    def get(self, request: Request, pk):
+        subj = get_object_or_404(Subject, pk=pk)
+        serializer = SubjectDetailSerializer(subj, many=False)
+        return Response(serializer.data, status=200)
 
 
 class SubjectFilterAPIView(views.APIView):

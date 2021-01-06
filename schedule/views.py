@@ -1,11 +1,8 @@
-from django.http import QueryDict
-
 from rest_framework import views
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from .models import Subject
-from .serializers import LessonSerializer, SubjectSerializer
+from .serializers import LessonSerializer
 from .services import get_week_schedule, get_day_schedule
 
 

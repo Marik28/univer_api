@@ -81,6 +81,7 @@ class Lesson(models.Model):
     day = models.ForeignKey('Day', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='День недели')
     parity = models.CharField(verbose_name='Четность недели', max_length=15, choices=PARITY_CHOICES, default='Всегда')
     archived = models.BooleanField(verbose_name='Заархивированный предмет', default=False)
+    next_assignment = models.TextField(verbose_name='Следующая домашка', null=True, blank=True)
 
     objects = LessonManager()
 

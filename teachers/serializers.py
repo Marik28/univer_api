@@ -45,6 +45,7 @@ class TeacherDetailSerializer(serializers.ModelSerializer):
     practic_set = TeacherSubjectListSerializer(many=True, read_only=True)
     lecture_set = TeacherSubjectListSerializer(many=True, read_only=True)
     lab_set = TeacherSubjectListSerializer(many=True, read_only=True)
+    department = DepartmentSerializer()
 
     class Meta:
         model = Teacher

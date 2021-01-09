@@ -3,10 +3,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Teacher, TeacherPosition, Department
+from .models import Teacher
 
-from schedule.serializers import SubjectSerializer
-from .serializers import TeacherSerializer, TeacherPositionSerializer, DepartmentSerializer, TeacherDetailSerializer
+from .serializers import TeacherDetailSerializer
 from .services import filter_teachers
 
 

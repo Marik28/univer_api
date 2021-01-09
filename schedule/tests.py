@@ -1,4 +1,5 @@
-from django.http import QueryDict
+from django.http import HttpResponse
 
-q = QueryDict()
-print(bool(q))
+
+r = HttpResponse()
+print(r["Content-Type"])

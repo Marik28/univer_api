@@ -1,4 +1,4 @@
-from django.http import QueryDict
+from django.http import QueryDict, HttpResponseBadRequest
 
 from .exceptions import NotCorrectQuery
 from .models import Lesson, Day
@@ -39,8 +39,10 @@ def get_day_schedule(request_query: QueryDict):
     возвращает None"""
     try:
         week_day = Day.objects.get(name=request_query['day_name'].lower())
+    except KeyError:
+        raise NotCorrectQuery("Не передано значение дня недели")
     except Day.DoesNotExist:
-        day_schedule = None
+        raise NotCorrectQuery("Некорректное значение дня недели")
     else:
         is_numerator = parse_parity(request_query)
         if is_numerator:

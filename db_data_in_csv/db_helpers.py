@@ -5,7 +5,7 @@ from django.db import IntegrityError
 from django.db.models import Model
 
 from schedule.models import Subject, Day, Lesson, LessonKind
-from teachers.models import Teacher, Department
+from teachers.models import Teacher, Department, TeacherPosition
 
 
 def add_teachers_to_db(csv_file: str, department: Model) -> None:
@@ -67,12 +67,9 @@ def make_schedule_from_csv(csv_file: str) -> None:
     with open(csv_file, 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            print(row['numerator'])
-            print(row['kind'])
             subj = Subject.objects.get(name=row['subject'])
             kind = LessonKind.objects.get(name=row['kind'])
             teacher = row['teacher']
-            print(f'{teacher=}')
             if teacher == '':
                 teacher = None
             else:
@@ -80,9 +77,28 @@ def make_schedule_from_csv(csv_file: str) -> None:
             time = dt.time().fromisoformat(row['time'])
             day = Day.objects.get(name=row['day_of_week'])
             parity = get_parity(row['numerator'])
-
+            print(f'{teacher=}')
+            print(f'{subj=}')
+            print(f'{kind.name=}')
+            if kind.name == 'Лекция':
+                subj.lecturer = teacher
+            elif kind.name == 'Лабораторное занятие':
+                subj.lab_teacher = teacher
+            elif kind.name == 'Семинар':
+                subj.lab_teacher = teacher
             lesson = Lesson(subject=subj, kind=kind, teacher=teacher, time=time, day=day, parity=parity)
+            subj.save()
             try:
                 lesson.save()
             except IntegrityError:
                 pass
+
+
+def add_teacher_positions_to_db(filename: str) -> None:
+    with open(filename, "r", encoding="utf-8") as file:
+        reader = csv.DictReader(file, delimiter=",")
+        for row in reader:
+            print(row)
+            name = row['position']
+            pos = TeacherPosition(name=name)
+            pos.save()

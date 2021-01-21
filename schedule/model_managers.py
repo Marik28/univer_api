@@ -13,8 +13,8 @@ class LessonManager(Manager):
 
     def numerator(self):
         """Пары, которые стоят по расписанию на числитель"""
-        return self.exclude(parity='Знаменатель').filter(archived=False)
+        return self.unarchived().exclude(parity='Знаменатель')
 
     def denominator(self):
         """Пары, которые стоят по расписанию на числитель"""
-        return self.exclude(parity='Числитель').filter(archived=False)
+        return self.unarchived().exclude(parity='Числитель')

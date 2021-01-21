@@ -3,6 +3,11 @@ from django.contrib import admin
 from .models import Day, LessonKind, Subject, Lesson
 
 
+class LessonInline(admin.StackedInline):
+    model = Lesson
+    extra = 0
+
+
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
     list_display = ('time', '__str__', 'day', 'teacher', 'parity', 'kind')
@@ -38,6 +43,7 @@ class LessonAdmin(admin.ModelAdmin):
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
+    inlines = [LessonInline]
 
 
 admin.site.register(Day)

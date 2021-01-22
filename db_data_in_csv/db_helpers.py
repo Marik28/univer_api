@@ -35,7 +35,8 @@ def add_subjects_to_db(csv_file: str) -> None:
         reader = csv.DictReader(file)
         for row in reader:
             name = row['name']
-            subj = Subject(name=name)
+            my_link = row['my_link']
+            subj = Subject(name=name, my_playlist_url=my_link)
             subj.save()
 
 
@@ -101,4 +102,14 @@ def add_teacher_positions_to_db(filename: str) -> None:
             print(row)
             name = row['position']
             pos = TeacherPosition(name=name)
+            pos.save()
+
+
+def add_lesson_kinds_to_db(filename: str) -> None:
+    with open(filename, "r", encoding="utf-8") as file:
+        reader = csv.DictReader(file, delimiter=",")
+        for row in reader:
+            print(row)
+            name = row['kind']
+            pos = LessonKind(name=name)
             pos.save()

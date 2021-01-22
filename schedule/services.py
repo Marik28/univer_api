@@ -21,7 +21,7 @@ def parse_parity(request_query: QueryDict) -> bool:
         raise NotCorrectQuery(f'Неизвестное значение четности недели ({parity}). Допустимы только числитель/знаменатель')
 
 
-def get_week_schedule(request_query: QueryDict) -> list[Lesson]:
+def get_week_schedule(request_query: QueryDict):
     """Возвращает расписание на неделю числитель/знаменатель"""
     if len(request_query) == 0:
         days = Lesson.objects.all()

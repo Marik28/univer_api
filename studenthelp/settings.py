@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -5,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'y^rk%r@_=appe*j1m8no62*ua=lcn5c8sm$&y%(p7p#1*czz=^'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

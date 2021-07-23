@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from schedule.models import Subject
-from teachers.serializers import TeacherLittleInfoSerializer
+from teachers.serializers import TeacherBriefInfoSerializer
 
 
 class SubjectSerializer(serializers.ModelSerializer):
@@ -11,9 +11,9 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class SubjectDetailSerializer(serializers.ModelSerializer):
-    lecturer = TeacherLittleInfoSerializer()
-    lab_teacher = TeacherLittleInfoSerializer()
-    practic_teacher = TeacherLittleInfoSerializer()
+    lecturer = TeacherBriefInfoSerializer()
+    lab_teacher = TeacherBriefInfoSerializer()
+    practic_teacher = TeacherBriefInfoSerializer()
 
     class Meta:
         model = Subject

@@ -10,7 +10,7 @@ from teachers.serializers import TeacherSerializer
 class LessonSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer()
     teacher = TeacherSerializer()
-    groups = GroupSerializer()
+    group = GroupSerializer()
 
     class Meta:
         model = Lesson

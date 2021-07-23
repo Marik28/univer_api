@@ -14,7 +14,7 @@ class WeekAPIView(views.APIView):
         try:
             days = get_week_schedule(request.GET)
         except NotCorrectQuery as e:
-            return HttpResponseBadRequest(str())
+            return HttpResponseBadRequest(str(e))
         serializer = LessonSerializer(days, many=True)
         return Response(data=serializer.data, status=200)
 

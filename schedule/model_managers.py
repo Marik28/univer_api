@@ -1,5 +1,7 @@
 from django.db.models import Manager
 
+from .choices import Parity
+
 
 class LessonManager(Manager):
 
@@ -13,8 +15,8 @@ class LessonManager(Manager):
 
     def numerator(self):
         """Пары, которые стоят по расписанию на числитель"""
-        return self.unarchived().exclude(parity='Знаменатель')
+        return self.unarchived().exclude(parity=Parity.DENOMINATOR)
 
     def denominator(self):
         """Пары, которые стоят по расписанию на числитель"""
-        return self.unarchived().exclude(parity='Числитель')
+        return self.unarchived().exclude(parity=Parity.NUMERATOR)

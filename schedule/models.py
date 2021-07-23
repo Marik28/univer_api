@@ -2,6 +2,7 @@ from django.db import models
 
 from pytils.translit import slugify
 
+from groups.models import Group
 from schedule.model_managers import LessonManager
 from teachers.models import Teacher
 
@@ -61,11 +62,11 @@ class Lesson(models.Model):
         ("Суббота", "суббота"),
         ("Воскресенье", "воскресенье"),
     )
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False,
                                 verbose_name='Название предмета')
     kind = models.CharField(max_length=50, choices=LESSON_KIND_CHOICES, default='Лекция',
                             verbose_name='Тип занятия')
-    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=False,
                                 verbose_name='Преподаватель')
     time = models.TimeField(verbose_name='Время начала занятия')
     day = models.CharField(max_length=20, choices=WEEK_DAYS_CHOICES, default="Понедельник", verbose_name='День недели')

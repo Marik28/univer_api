@@ -6,3 +6,6 @@ makemigrations:
 
 migrate:
 	python ./manage.py migrate
+
+startapp:
+	django-admin startapp $(name)

@@ -8,3 +8,6 @@ class Group(models.Model):
         ordering = ['name']
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
+
+    def __str__(self):
+        return str(self.name)

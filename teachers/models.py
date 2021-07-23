@@ -62,7 +62,7 @@ class Teacher(models.Model):
         """Отображение телефона без пробелов"""
         if self.phone_number:
             delimiters = r'[ -]{1}'
-            splitted = re.split(delimiters, self.phone_number)
+            splitted = re.split(delimiters, str(self.phone_number))
             return ''.join(splitted)
         else:
             return None

@@ -2,14 +2,7 @@ from rest_framework import serializers
 
 from schedule.models import Subject
 
-from .models import Teacher, TeacherPosition, Department
-
-
-class TeacherPositionSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = TeacherPosition
-        fields = '__all__'
+from .models import Teacher, Department
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
@@ -21,7 +14,6 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 class TeacherSerializer(serializers.ModelSerializer):
     department = DepartmentSerializer()
-    position = TeacherPositionSerializer()
 
     class Meta:
         model = Teacher

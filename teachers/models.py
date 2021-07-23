@@ -5,18 +5,7 @@ from django.db import models
 from django.urls import reverse
 from pytils.translit import slugify
 
-
-class TeacherPosition(models.Model):
-    """Модель, отображающая должность преподавателя"""
-    name = models.CharField(max_length=100, verbose_name='Название должности')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'Должность преподавателя'
-        verbose_name_plural = 'Должности преподавателей'
+from .choices import TeacherPosition
 
 
 class Department(models.Model):
@@ -41,8 +30,8 @@ class Teacher(models.Model):
                                   help_text='Максимальная длина 50 символов')
     middle_name = models.CharField(max_length=50, verbose_name='Отчество преподавателя',
                                    help_text='Максимальная длина 50 символов')
-    position = models.ForeignKey(TeacherPosition, on_delete=models.SET_NULL,
-                                 verbose_name='Должность', null=True, blank=True, related_name='teachers')
+    position = models.CharField(max_length=30, choices=TeacherPosition.choices, default=TeacherPosition.SENIOR_LECTURER,
+                                verbose_name='Должность', )
     department = models.ForeignKey(Department, on_delete=models.SET_NULL,
                                    verbose_name='Кафедра', null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True,

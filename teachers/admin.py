@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from schedule.models import Lesson, Subject
-from .models import TeacherPosition, Teacher, Department
+from .models import Teacher, Department
 
 
 class LessonInline(admin.StackedInline):
@@ -26,6 +26,3 @@ class TeacherAdmin(admin.ModelAdmin):
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ("name", "abbreviation")
-
-
-admin.site.register(TeacherPosition)

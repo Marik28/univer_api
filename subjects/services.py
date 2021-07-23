@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.http import QueryDict
 
-from schedule.models import Subject
+from .models import Subject
 
 
 def filter_subjects(query: QueryDict):

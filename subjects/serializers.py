@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from schedule.models import Subject
 from teachers.serializers import TeacherBriefInfoSerializer
+
+from .models import Subject
 
 
 class SubjectSerializer(serializers.ModelSerializer):

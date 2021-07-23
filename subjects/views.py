@@ -4,9 +4,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 
-from schedule.models import Subject
-from subjects.serializers import SubjectDetailSerializer
-from subjects.services import filter_subjects
+from .models import Subject
+from .serializers import SubjectDetailSerializer
+from .services import filter_subjects
 
 
 class SubjectListView(views.APIView):

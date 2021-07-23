@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Day, Subject, Lesson
+from .models import Subject, Lesson
 
 
 class LessonInline(admin.StackedInline):
@@ -45,5 +45,3 @@ class SubjectAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     inlines = [LessonInline]
 
-
-admin.site.register(Day)

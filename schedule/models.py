@@ -37,21 +37,6 @@ class Subject(models.Model):
         verbose_name_plural = 'Предметы'
 
 
-class Day(models.Model):
-    """Модель дня недели"""
-    code = models.CharField(max_length=10, null=True, verbose_name='Сокращенное название')
-    name = models.CharField(max_length=20, verbose_name='Название дня недели')
-    index = models.PositiveSmallIntegerField('Порядковый номер', null=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['index']
-        verbose_name = 'День недели'
-        verbose_name_plural = 'Дни недели'
-
-
 class Lesson(models.Model):
     """Модель, отображающая конкретную пару"""
     PARITY_CHOICES = (
@@ -59,8 +44,6 @@ class Lesson(models.Model):
         ('Знаменатель', 'знаменатель'),
         ('Всегда', 'всегда')
     )
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
-                                verbose_name='Название предмета')
     LESSON_KIND_CHOICES = (
         ('LEC', 'Лекция'),
         ('LAB', 'Лабораторное занятие'),
@@ -69,12 +52,23 @@ class Lesson(models.Model):
         ('SRS', 'СРС'),
         ('CUR', 'Кураторский час'),
     )
+    WEEK_DAYS_CHOICES = (
+        ("mon", "понедельник"),
+        ("tue", "вторник"),
+        ("wed", "среда"),
+        ("thu", "четверг"),
+        ("fri", "пятница"),
+        ("sat", "суббота"),
+        ("sun", "воскресенье"),
+    )
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
+                                verbose_name='Название предмета')
     kind = models.CharField(max_length=50, choices=LESSON_KIND_CHOICES, default='LEC',
                             verbose_name='Тип занятия')
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Преподаватель')
     time = models.TimeField(verbose_name='Время начала занятия')
-    day = models.ForeignKey('Day', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='День недели')
+    day = models.CharField(max_length=20, choices=WEEK_DAYS_CHOICES, default="mon", verbose_name='День недели')
     parity = models.CharField(verbose_name='Четность недели', max_length=15, choices=PARITY_CHOICES, default='Всегда')
     archived = models.BooleanField(verbose_name='Заархивированный предмет', default=False)
     next_assignment = models.TextField(verbose_name='Следующая домашка', null=True, blank=True)

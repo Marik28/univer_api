@@ -3,9 +3,10 @@ from django.db import models
 from pytils.translit import slugify
 
 from groups.models import Group
-from schedule.choices import LessonKind, WeekDays, Parity
-from schedule.model_managers import LessonManager
 from teachers.models import Teacher
+
+from .choices import LessonKind, WeekDays, Parity
+from .model_managers import LessonManager
 
 
 class Subject(models.Model):

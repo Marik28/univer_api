@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Subject, Lesson
+from .models import Lesson
 
 
 class LessonInline(admin.StackedInline):
@@ -38,10 +38,4 @@ class LessonAdmin(admin.ModelAdmin):
     unarchive.short_description = 'Разархивировать выбранные пары'
     unarchive.allowed_permission = ('change',)
 
-
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-    inlines = [LessonInline]
 

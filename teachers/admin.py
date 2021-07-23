@@ -1,18 +1,12 @@
 from django.contrib import admin
 
-from schedule.models import Lesson, Subject
+from schedule.models import Lesson
 from .models import Teacher, Department
 
 
 class LessonInline(admin.StackedInline):
     model = Lesson
     extra = 0
-
-
-# class SubjectInline(admin.StackedInline):
-#     model = Subject
-#     extra = 0
-#     fk_name =
 
 
 @admin.register(Teacher)

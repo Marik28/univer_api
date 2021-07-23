@@ -63,12 +63,12 @@ class Lesson(models.Model):
     )
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Название предмета')
-    kind = models.CharField(max_length=50, choices=LESSON_KIND_CHOICES, default='LEC',
+    kind = models.CharField(max_length=50, choices=LESSON_KIND_CHOICES, default='Лекция',
                             verbose_name='Тип занятия')
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Преподаватель')
     time = models.TimeField(verbose_name='Время начала занятия')
-    day = models.CharField(max_length=20, choices=WEEK_DAYS_CHOICES, default="mon", verbose_name='День недели')
+    day = models.CharField(max_length=20, choices=WEEK_DAYS_CHOICES, default="Понедельник", verbose_name='День недели')
     parity = models.CharField(verbose_name='Четность недели', max_length=15, choices=PARITY_CHOICES, default='Всегда')
     archived = models.BooleanField(verbose_name='Заархивированный предмет', default=False)
     next_assignment = models.TextField(verbose_name='Следующая домашка', null=True, blank=True)

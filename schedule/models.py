@@ -37,18 +37,6 @@ class Subject(models.Model):
         verbose_name_plural = 'Предметы'
 
 
-class LessonKind(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Название типа пары')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = 'Тип пары'
-        verbose_name_plural = 'Типы пары'
-
-
 class Day(models.Model):
     """Модель дня недели"""
     code = models.CharField(max_length=10, null=True, verbose_name='Сокращенное название')
@@ -73,8 +61,16 @@ class Lesson(models.Model):
     )
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Название предмета')
-    kind = models.ForeignKey(LessonKind, on_delete=models.SET_NULL, null=True, blank=True,
-                             verbose_name='Тип занятия')
+    LESSON_KIND_CHOICES = (
+        ('LEC', 'Лекция'),
+        ('LAB', 'Лабораторное занятие'),
+        ('PRC', 'Семинар'),
+        ('SRSP', 'СРСП'),
+        ('SRS', 'СРС'),
+        ('CUR', 'Кураторский час'),
+    )
+    kind = models.CharField(max_length=50, choices=LESSON_KIND_CHOICES, default='LEC',
+                            verbose_name='Тип занятия')
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                 verbose_name='Преподаватель')
     time = models.TimeField(verbose_name='Время начала занятия')

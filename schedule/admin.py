@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Day, LessonKind, Subject, Lesson
+from .models import Day, Subject, Lesson
 
 
 class LessonInline(admin.StackedInline):
@@ -47,4 +47,3 @@ class SubjectAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Day)
-admin.site.register(LessonKind)

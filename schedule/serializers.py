@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from subjects.serializers import SubjectSerializer
-from .models import Lesson, Day, LessonKind
+from .models import Lesson, Day
 
 from teachers.serializers import TeacherSerializer
 
@@ -12,17 +12,9 @@ class DaySerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
-class LessonKindSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = LessonKind
-        fields = ['name']
-
-
 class LessonSerializer(serializers.ModelSerializer):
     subject = SubjectSerializer()
     day = DaySerializer()
-    kind = LessonKindSerializer()
     teacher = TeacherSerializer()
 
     class Meta:

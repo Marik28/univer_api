@@ -68,6 +68,7 @@ class Lesson(models.Model):
                             verbose_name='Тип занятия')
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=False,
                                 verbose_name='Преподаватель')
+    group = models.ForeignKey(Group, on_delete=models.CharField, null=False, verbose_name='Группа, у которой пара')
     time = models.TimeField(verbose_name='Время начала занятия')
     day = models.CharField(max_length=20, choices=WEEK_DAYS_CHOICES, default="Понедельник", verbose_name='День недели')
     parity = models.CharField(verbose_name='Четность недели', max_length=15, choices=PARITY_CHOICES, default='Всегда')

@@ -3,6 +3,7 @@ from django.db import models
 from pytils.translit import slugify
 
 from groups.models import Group
+from schedule.choices import LessonKind, WeekDays, Parity
 from schedule.model_managers import LessonManager
 from teachers.models import Teacher
 
@@ -40,28 +41,6 @@ class Subject(models.Model):
 
 class Lesson(models.Model):
     """Модель, отображающая конкретную пару"""
-
-    class Parity(models.Choices):
-        NUMERATOR = 'Числитель'
-        DENOMINATOR = 'Знаменатель'
-        ALWAYS = 'Всегда'
-
-    class LessonKind(models.Choices):
-        LECTURE = 'Лекция'
-        LAB = 'Лабораторное занятие'
-        SEMINAR = 'Семинар'
-        SRSP = 'СРСП'
-        SRS = 'СРС'
-        CURATORIAL_HOUR = 'Кураторский час'
-
-    class WeekDays(models.Choices):
-        MONDAY = "Понедельник"
-        TUESDAY = "Вторник"
-        WEDNESDAY = "Среда"
-        THURSDAY = "Четверг"
-        FRIDAY = "Пятница"
-        SATURDAY = "Суббота"
-        SUNDAY = "Воскресенье"
 
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False,
                                 verbose_name='Название предмета')

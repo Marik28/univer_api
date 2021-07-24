@@ -1,5 +1,4 @@
 from django.db import models
-from pytils.translit import slugify
 
 from groups.models import Group
 from teachers.models import Teacher
@@ -39,7 +38,7 @@ class Subject(models.Model):
                                       verbose_name='Ссылка на плейлист на моем канале')
 
     def __str__(self):
-        return str(self.name)
+        return f"{self.name} ({self.group})"
 
     class Meta:
         ordering = ['name']

@@ -10,10 +10,13 @@ class LessonInline(admin.StackedInline):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('time', '__str__', 'day', 'teacher', 'parity', 'kind')
+    list_display = ('time', '__str__', 'get_group', 'day', 'teacher', 'parity', 'kind')
     list_display_links = ('__str__',)
     list_filter = ('day', 'parity', 'teacher',)
     actions = ['archive', 'unarchive']
+
+    def get_group(self, lesson):
+        return lesson.subject.group
 
     def archive(self, request, queryset):
         """Заархивировать пары"""
@@ -37,5 +40,5 @@ class LessonAdmin(admin.ModelAdmin):
     archive.allowed_permission = ('change',)
     unarchive.short_description = 'Разархивировать выбранные пары'
     unarchive.allowed_permission = ('change',)
-
+    get_group.short_description = 'Группа'
 

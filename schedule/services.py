@@ -1,53 +1,44 @@
-from django.http import QueryDict
+from typing import Optional
 
+from django.db.models import QuerySet
+
+from subjects.choices import SubGroup
+from .choices import WeekDays, Parity
 from .exceptions import NotCorrectQuery
 from .models import Lesson
 
 
-def parse_num(request_query: QueryDict) -> bool:
-    return bool(int(request_query['is_numerator']))
+def filter_lessons(day: Optional[str],
+                   group: Optional[str],
+                   subgroup: Optional[int],
+                   parity: Optional[str]) -> QuerySet[Lesson]:
+    lessons: QuerySet = Lesson.objects.all()
 
-
-def parse_parity(request_query: QueryDict) -> bool:
-    try:
-        parity = request_query['parity']
-    except KeyError:
-        raise NotCorrectQuery('Не было передано значение четности недели')
-    if parity == 'числитель':
-        return True
-    elif parity == 'знаменатель':
-        return False
-    else:
-        raise NotCorrectQuery(f'Неизвестное значение четности недели ({parity}). Допустимы только числитель/знаменатель')
-
-
-def get_week_schedule(request_query: QueryDict):
-    """Возвращает расписание на неделю числитель/знаменатель"""
-    if len(request_query) == 0:
-        days = Lesson.objects.all()
-    else:
-        is_numerator = parse_parity(request_query)
-        if is_numerator:
-            days = Lesson.objects.numerator()
+    if day is not None:
+        if day not in WeekDays:
+            raise NotCorrectQuery("'day' query parameter must be a member of WeekDays enumerator")
         else:
-            days = Lesson.objects.denominator()
-    return days
+            lessons = lessons.filter(day=day)
 
-
-def get_day_schedule(request_query: QueryDict):
-    """Возвращает расписание на 1 день. Если на этот день нет расписания,
-    возвращает None"""
-    week_day = request_query.get('day_name')
-    if week_day is None:
-        raise NotCorrectQuery("Не передано значение дня недели")
-
-    if week_day not in Lesson.day.choices:
-        raise NotCorrectQuery("Некорректное значение дня недели")
-    else:
-        is_numerator = parse_parity(request_query)
-        if is_numerator:
-            parity_schedule = Lesson.objects.numerator()
+    if parity is not None:
+        if parity not in Parity:
+            raise NotCorrectQuery("'parity' query parameter must be a member of Parity enumerator")
         else:
-            parity_schedule = Lesson.objects.denominator()
-        day_schedule = parity_schedule.filter(day=week_day).filter(archived=False)
-    return day_schedule
+            lessons = lessons.filter(parity=parity)
+
+    if group is not None:
+        lessons = lessons.filter(subject__group__name=group)
+    else:
+        subgroup = None
+
+    if subgroup is not None:
+        exception = NotCorrectQuery("'subgroup' query parameter must be a member of SubGroup enumerator")
+        try:
+            subgroup = int(subgroup)
+        except ValueError:
+            raise exception from None
+        if subgroup not in SubGroup:
+            raise exception from None
+        else:
+            lessons = lessons.filter(subject__subgroup=subgroup)
+    return lessons

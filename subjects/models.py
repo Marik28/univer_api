@@ -22,9 +22,10 @@ class SubjectName(models.Model):
 
 class Subject(models.Model):
     """Модель, отображающая предмет"""
-    name = models.ForeignKey(SubjectName, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    subgroup = models.IntegerField(choices=SubGroup.choices, default=SubGroup.BOTH)
+    name = models.ForeignKey(SubjectName, on_delete=models.CASCADE, verbose_name="Название предмета")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="Группа, у которой ведется предмет")
+    subgroup = models.IntegerField(choices=SubGroup.choices, default=SubGroup.BOTH,
+                                   verbose_name="Подгруппа, у которой ведется предмет")
     lecturer = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                  verbose_name='Лектор', related_name='lecture_set')
     lab_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,

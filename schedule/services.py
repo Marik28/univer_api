@@ -28,17 +28,15 @@ def filter_lessons(day: Optional[str],
 
     if group is not None:
         lessons = lessons.filter(subject__group__name=group)
-    else:
-        subgroup = None
 
-    if subgroup is not None:
-        exception = NotCorrectQuery("'subgroup' query parameter must be a member of SubGroup enumerator")
-        try:
-            subgroup = int(subgroup)
-        except ValueError:
-            raise exception from None
-        if subgroup not in SubGroup:
-            raise exception from None
-        else:
-            lessons = lessons.filter(subject__subgroup=subgroup)
+        if subgroup is not None:
+            exception = NotCorrectQuery("'subgroup' query parameter must be a member of SubGroup enumerator")
+            try:
+                subgroup = int(subgroup)
+            except ValueError:
+                raise exception from None
+            if subgroup not in SubGroup:
+                raise exception from None
+            else:
+                lessons = lessons.filter(subject__subgroup=subgroup)
     return lessons

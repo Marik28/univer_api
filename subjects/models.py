@@ -11,6 +11,11 @@ class SubjectName(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название предмета',
                             help_text='Не более 255 символов')
 
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Название предмета'
+        verbose_name_plural = 'Названия предметов'
+
     def __str__(self):
         return str(self.name)
 
@@ -21,7 +26,7 @@ class Subject(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     subgroup = models.IntegerField(choices=SubGroup.choices, default=SubGroup.BOTH)
     lecturer = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
-                                 verbose_name='Лектора', related_name='lecture_set')
+                                 verbose_name='Лектор', related_name='lecture_set')
     lab_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                     verbose_name='Преподаватель, ведущий лабораторные', related_name='lab_set')
     practic_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,

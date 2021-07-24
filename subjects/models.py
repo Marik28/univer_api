@@ -37,15 +37,9 @@ class Subject(models.Model):
                                             verbose_name='Ссылка на плейлист на канале КарТУ')
     my_playlist_url = models.URLField(max_length=255, null=True, blank=True,
                                       verbose_name='Ссылка на плейлист на моем канале')
-    slug = models.SlugField(max_length=200, null=True, blank=True, unique=True,
-                            verbose_name='Удобное представления URL', help_text='Устанавливается автоматически ')
 
     def __str__(self):
         return str(self.name)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(str(self))
-        super().save(*args, *kwargs)
 
     class Meta:
         ordering = ['name']

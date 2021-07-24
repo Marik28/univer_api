@@ -17,7 +17,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        exclude = ('slug',)
+        fields = '__all__'
 
 
 class TeacherBriefInfoSerializer(serializers.ModelSerializer):
@@ -41,4 +41,4 @@ class TeacherDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        exclude = ('slug',)
+        fields = '__all__'

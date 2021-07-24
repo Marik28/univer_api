@@ -11,7 +11,7 @@ class SubjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        exclude = ['slug', 'lecturer', 'lab_teacher', 'practic_teacher']
+        exclude = ['lecturer', 'lab_teacher', 'practic_teacher']
 
 
 class SubjectDetailSerializer(serializers.ModelSerializer):
@@ -22,4 +22,4 @@ class SubjectDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subject
-        exclude = ['slug']
+        fields = '__all__'

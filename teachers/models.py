@@ -2,8 +2,6 @@ import re
 
 from django.core import validators
 from django.db import models
-from django.urls import reverse
-from pytils.translit import slugify
 
 from .choices import TeacherPosition
 
@@ -41,8 +39,6 @@ class Teacher(models.Model):
                                         )],
                                     verbose_name='Номер телефона преподавателя',
                                     help_text='Пример: +7-708-999-99-99. Пробелы и тире можно не писать')
-    slug = models.SlugField(max_length=200, null=True, blank=True, unique=True,
-                            verbose_name='Удобное представления URL', help_text='Устанавливается автоматически ')
     kstu_link = models.URLField(max_length=255, null=True, blank=True,
                                 verbose_name='Ссылка на преподавателя на сайте KSTU')
     email = models.EmailField(max_length=100, null=True, blank=True, verbose_name="E-mail преподавателя")
@@ -56,15 +52,8 @@ class Teacher(models.Model):
         else:
             return None
 
-    def get_absolute_url(self):
-        return reverse('teacher_detail', args=[self.slug])
-
     def __str__(self):
         return f'{self.second_name}, {self.first_name} {self.middle_name}'
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(str(self))
-        super().save(*args, *kwargs)
 
     class Meta:
         ordering = ['second_name', 'first_name']

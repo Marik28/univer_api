@@ -1,13 +1,25 @@
 from django.db import models
 from pytils.translit import slugify
 
+from groups.models import Group
 from teachers.models import Teacher
+
+from .choices import SubGroup
+
+
+class SubjectName(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название предмета',
+                            help_text='Не более 255 символов')
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Subject(models.Model):
     """Модель, отображающая предмет"""
-    name = models.CharField(max_length=255, verbose_name='Название предмета',
-                            help_text='Не более 100 символов')
+    name = models.ForeignKey(SubjectName, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    subgroup = models.IntegerField(choices=SubGroup.choices, default=SubGroup.BOTH)
     lecturer = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
                                  verbose_name='Лектора', related_name='lecture_set')
     lab_teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,
@@ -23,7 +35,7 @@ class Subject(models.Model):
                             verbose_name='Удобное представления URL', help_text='Устанавливается автоматически ')
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(str(self))

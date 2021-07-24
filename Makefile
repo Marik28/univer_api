@@ -9,3 +9,6 @@ migrate:
 
 startapp:
 	django-admin startapp $(name)
+
+createsuperuser:
+	python ./manage.py createsuperuser

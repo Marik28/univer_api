@@ -1,6 +1,5 @@
 from django.db import models
 
-from groups.models import Group
 from subjects.models import Subject
 from teachers.models import Teacher
 
@@ -17,7 +16,6 @@ class Lesson(models.Model):
                             verbose_name='Тип занятия')
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=False,
                                 verbose_name='Преподаватель')
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=False, verbose_name='Группа, у которой пара')
     time = models.TimeField(verbose_name='Время начала занятия')
     day = models.CharField(max_length=20, choices=WeekDays.choices, default=WeekDays.MONDAY, verbose_name='День недели')
     parity = models.CharField(verbose_name='Четность недели', max_length=15,

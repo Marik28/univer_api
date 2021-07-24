@@ -10,7 +10,7 @@ from .services import filter_teachers
 
 
 class TeacherListView(APIView):
-    """View для отображения информации обо всех преподах"""
+    """View для отображения информации о списке преподавателей"""
     def get(self, request: Request):
         teachers = filter_teachers(request.GET)
         serializer = TeacherDetailSerializer(teachers, many=True)
@@ -18,7 +18,7 @@ class TeacherListView(APIView):
 
 
 class TeacherDetailView(APIView):
-    """View для обо всех преподах"""
+    """View для отображения информации о конкретном преподавателе"""
     def get(self, request, pk):
         teacher = get_object_or_404(Teacher, pk=pk)
         serializer = TeacherDetailSerializer(teacher, many=False)
